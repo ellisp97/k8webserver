@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  labels:
+    name: mysql
+    app: ellis-db
+spec:
+  selector:
+    matchLabels:
+      app: ellis
+      role: db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ellis
+        role: db
+    spec:
+     containers:
+     - name: mysql
+       image: mysql:5
+       ports:
+         - containerPort: 3306         
+           protocol: TCP
+       env: 
+       - name: MYSQL_RANDOM_ROOT_PASSWORD
+         value: "yes"
+       - name: MYSQL_DATABASE
+         value: AZUREDB
+       - name: MYSQL_USER
+         value: user1
+       - name: MYSQL_PASSWORD
+         value: {{ .Values.db.password }}
+         

@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: k8s-apps-http
+  labels:
+    app: Fn
+    prometheus: {{ .Release.Name }}
+spec:
+  jobLabel: k8s-app
+  selector:
+    matchLabels:
+      monitor: "true"
+  endpoints:
+  - port: metrics
+    interval: 5s

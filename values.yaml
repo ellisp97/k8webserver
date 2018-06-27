@@ -1,0 +1,15 @@
+db:
+  password: foobar
+
+prometheus:
+  replicaCount: 1
+  scrapeInterval: 10s
+  retention: 1d
+  persistenceEnabled: false
+  service:
+    type: ClusterIP
+    externalPort: 9090
+ 
+global:
+  environment: minikube
+

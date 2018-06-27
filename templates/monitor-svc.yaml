@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ellis-monitor
+  labels:
+    monitor: "true"
+spec: 
+  type: ClusterIP
+  ports: 
+    - name: metrics
+      port: 5556
+      targetPort: metrics
+  selector: 
+    role: web

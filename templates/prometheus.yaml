@@ -1,0 +1,30 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: {{ .Release.Name }}-prometheus
+spec:
+  serviceMonitorSelector:
+    matchExpressions:
+      - key: app
+        operator: Exists
+  replicas: {{ .Values.prometheus.replicaCount }}
+  scrapeInterval: {{ .Values.prometheus.scrapeInterval }}
+  serviceAccountName: {{ .Release.Name }}-prometheus
+  resources:
+    requests:
+      memory: 400Mi
+  externalLabels:
+    environment: {{ .Values.global.environment }}
+  retention: {{ .Values.prometheus.retention }}
+{{- if .Values.prometheus.persistenceEnabled }}
+  storage:
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: "oci"
+        persistentVolumeReclaimPolicy: Retain
+        resources:
+          requests:
+            storage: 500Gi
+{{- end }}
